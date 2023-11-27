@@ -1,6 +1,6 @@
 <h1>
   <p align=center>
-    🗜️<br/>esc
+    🗜️esc
 　　</p>
 </h1>
 <p align=center>
