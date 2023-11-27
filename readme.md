@@ -1,7 +1,5 @@
 <h1>
-  <p align=center>
-    🗜️esc⚡️
-　　</p>
+  <p align=center>🗜️esc⚡️</p>
 </h1>
 <p align=center>
   esbuild wrapper like tsc
