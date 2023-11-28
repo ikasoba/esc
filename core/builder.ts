@@ -111,9 +111,13 @@ export class EscBuilder {
         "--noEmitOnError",
         "false",
       ];
-      if (this.option.escOptions.declarationDir) {
-        args.push("--declarationDir", this.option.escOptions.declarationDir);
-      }
+
+      args.push(
+        "--declarationDir",
+        this.option.escOptions.declarationDir ??
+          this.option.escOptions.outDir ??
+          "."
+      );
 
       tscTask = new Command({
         cmd: "npx",

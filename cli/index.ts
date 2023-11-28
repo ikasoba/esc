@@ -17,6 +17,7 @@ const app = new Command()
 
 app
   .command("build")
+  .description("build project.")
   .option("--target <target>", "doc: https://esbuild.github.io/api/#target")
   .option("--format <format>", "iife | cjs | esm")
   .option(
@@ -31,10 +32,7 @@ app
   .option("--bundleJsonModule")
   .option("--declaration")
   .option("--declarationDir <dir>")
-  .description("build project.")
-  .action(async () => {
-    const opts = app.opts<EscOptions>();
-
+  .action(async (opts: EscOptions) => {
     const parsed = await loadTsConfigFromFile("./tsconfig.json");
 
     const options = createBuilderOption(parsed);
