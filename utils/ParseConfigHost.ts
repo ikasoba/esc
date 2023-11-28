@@ -6,6 +6,7 @@ import type {
 } from "typescript";
 import { isWindows } from "./isWindows.js";
 import { minimatch } from "minimatch";
+import { glob } from "glob";
 
 export class ModuleResolutionHost implements IModuleResolutionHost {
   constructor(public basePath: string) {}
@@ -53,6 +54,10 @@ export class ParseConfigHost
       rootDir = path.join(this.basePath, rootDir);
     }
 
+    includes = includes.map((x) =>
+      x.replace(/^(?:\.[\/\\])+/, "").replace(/[\/\\]+$/, "")
+    );
+
     if (excludes) {
       excludes = excludes.map((x) =>
         x.replace(/^(?:\.[\/\\])+/, "").replace(/[\/\\]+$/, "")
@@ -60,48 +65,24 @@ export class ParseConfigHost
 
       excludes = [...excludes, "node_modules/**/*"];
     }
+    const res = glob.sync([...includes], {
+      absolute: true,
+      cwd: this.basePath,
+      maxDepth: depth,
+      nodir: true,
+      ignore: {
+        ignored: (p) => {
+          return !extensions.some((x) => p.name.endsWith(x));
+        },
+        childrenIgnored: (p) => {
+          const relativePath = path.relative(this.basePath, p.fullpath());
 
-    const pathStack = [rootDir];
-    let depthCount = 0;
-    const list: string[] = [];
-
-    while (pathStack.length && depthCount < depth) {
-      const currentPath = pathStack.pop()!;
-      const dir = fs.readdirSync(currentPath, { withFileTypes: true });
-
-      let isExistsChildDir = false;
-      for (const item of dir) {
-        const fullPath = path.join(item.path, item.name);
-        const itemPath = path.relative(
-          this.basePath,
-          path.join(item.path, item.name)
-        );
-
-        if (item.isFile() && !extensions.some((x) => itemPath.endsWith(x)))
-          continue;
-        if (
-          excludes &&
-          excludes.some((pattern) => minimatch(itemPath, pattern))
-        )
-          continue;
-        if (!includes.some((pattern) => minimatch(itemPath, pattern))) continue;
-
-        if (item.isDirectory()) {
-          pathStack.push(fullPath);
-
-          isExistsChildDir = true;
-        }
-
-        if (item.isFile()) {
-          list.push(itemPath);
-        }
-      }
-
-      if (isExistsChildDir) {
-        depthCount += 1;
-      }
-    }
-
-    return list;
+          return (excludes ?? []).some((pattern) =>
+            minimatch(relativePath, pattern)
+          );
+        },
+      },
+    });
+    return res;
   }
 }
