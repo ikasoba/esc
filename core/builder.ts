@@ -18,7 +18,10 @@ export interface BuilderResult {
   tscOutputs: Buffer[];
 }
 
-export const createBuilderOption = (o: ts.ParsedCommandLine): BuilderOption => {
+export const createBuilderOption = (
+  entryPoints: string[] | null,
+  o: ts.ParsedCommandLine
+): BuilderOption => {
   const option: BuilderOption = {
     escOptions: {
       target: getTargetName(o.options.target),
@@ -29,7 +32,7 @@ export const createBuilderOption = (o: ts.ParsedCommandLine): BuilderOption => {
       declarationDir: o.options.declarationDir,
       format: "esm",
     },
-    entryPoints: o.fileNames,
+    entryPoints: entryPoints ?? o.fileNames,
     tsconfigRaw: o.raw,
   };
 
@@ -81,6 +84,9 @@ export class EscBuilder {
         "import-assertions": true,
       },
       sourcemap: this.option.escOptions.sourceMap,
+      loader: {
+        ".html": "copy",
+      },
     };
 
     if (this.option.escOptions.bundle) {

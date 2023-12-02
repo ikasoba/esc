@@ -9,22 +9,28 @@ export function EscPlugin(option: EscOptions): Plugin {
 
     setup(build: PluginBuild) {
       build.onResolve({ filter: /.*/ }, async (args) => {
-        if (args.kind === "entry-point") return;
-
-        if (!option.bundle && /\.json$/i.test(args.path)) {
-          if (option.bundleJsonModule) {
-            return { external: false };
+        switch (args.kind) {
+          case "entry-point": {
+            return;
           }
 
-          const filePath = path.join(args.resolveDir, args.path);
-          const outFilePath = path.join(
-            build.initialOptions.outdir ?? ".",
-            path.relative(".", path.join(args.resolveDir, args.path))
-          );
+          default: {
+            if (!option.bundle && /\.json$/i.test(args.path)) {
+              if (option.bundleJsonModule) {
+                return { external: false };
+              }
 
-          await fs.mkdir(path.dirname(outFilePath)).catch((e) => {});
+              const filePath = path.join(args.resolveDir, args.path);
+              const outFilePath = path.join(
+                build.initialOptions.outdir ?? ".",
+                path.relative(".", path.join(args.resolveDir, args.path))
+              );
 
-          await fs.copyFile(filePath, outFilePath);
+              await fs.mkdir(path.dirname(outFilePath)).catch((e) => {});
+
+              await fs.copyFile(filePath, outFilePath);
+            }
+          }
         }
 
         return {

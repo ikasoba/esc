@@ -9,6 +9,7 @@ import {
   loadTsConfigFromFile,
 } from "../core/index.js";
 import { EscOptions } from "../core/option.js";
+import { ParseConfigHost } from "../utils/ParseConfigHost.js";
 
 const app = new Command()
   .name("esc")
@@ -34,8 +35,18 @@ app
   .option("--declarationDir <dir>")
   .action(async (opts: EscOptions) => {
     const parsed = await loadTsConfigFromFile("./tsconfig.json");
+    const parseConfigHost = new ParseConfigHost(".");
 
-    const options = createBuilderOption(parsed);
+    const entryPoints = [
+      ...parseConfigHost.readDirectory(
+        ".",
+        [".js", ".ts", ".jsx", ".tsx", ".html"],
+        parsed.raw.exclude,
+        parsed.raw.include
+      ),
+    ];
+
+    const options = createBuilderOption(entryPoints, parsed);
 
     options.escOptions = { ...options.escOptions, ...opts };
 
