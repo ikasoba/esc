@@ -20,6 +20,9 @@ dependencies:
   typescript:
     specifier: ^5.3.2
     version: 5.3.2
+  yosano:
+    specifier: ^0.1.1
+    version: 0.1.1
 
 devDependencies:
   '@types/node':
@@ -611,3 +614,9 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
     dev: true
+
+  /yosano@0.1.1:
+    resolution: {integrity: sha512-fh77z7oBx3vX/+MLcuiqBZY/Ecz/arvk4+CG3d7TWPlaN8TbOdCwpXGmDdvMUWl5EHTE9IWur6V9V5SUpojyKw==}
+    dependencies:
+      minimatch: 9.0.3
+    dev: false
