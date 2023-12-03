@@ -6,6 +6,10 @@
   "bin": {
     "esc": "./dist/cli/index.js"
   },
+  "exports": {
+    "./loader": "./dist/loader/index.js",
+    "./*": "./dist/*"
+  },
   "scripts": {
     "build": "node --loader=ts-node/esm ./cli/index.ts build",
     "prepare": "npm run build"
