@@ -30,8 +30,9 @@ app
   .option("--outFile <file>")
   .option("--bundle")
   .option("--minify")
-  .option("--bundleJsonModule")
-  .option("--declaration")
+  .option("--declaration [bool]", "default: true", (opt) =>
+    opt === "true" ? true : opt === "false" ? false : true
+  )
   .option("--declarationDir <dir>")
   .action(async (opts: EscOptions) => {
     const parsed = await loadTsConfigFromFile("./tsconfig.json");
