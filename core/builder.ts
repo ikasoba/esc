@@ -31,6 +31,7 @@ export const createBuilderOption = (
       declaration: o.options.declaration,
       declarationDir: o.options.declarationDir,
       format: "esm",
+      write: !o.options.noEmit,
     },
     entryPoints: entryPoints ?? o.fileNames,
     tsconfigRaw: o.raw,
@@ -85,8 +86,10 @@ export class EscBuilder {
       },
       sourcemap: this.option.escOptions.sourceMap,
       loader: {
-        ".html": "copy",
+        ...this.option.escOptions.loader,
       },
+      write: this.option.escOptions.write,
+      metafile: this.option.escOptions.metafile,
     };
 
     if (this.option.escOptions.bundle) {

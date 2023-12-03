@@ -40,7 +40,7 @@ app
     const entryPoints = [
       ...parseConfigHost.readDirectory(
         ".",
-        [".js", ".ts", ".jsx", ".tsx", ".html"],
+        undefined,
         parsed.raw.exclude,
         parsed.raw.include
       ),

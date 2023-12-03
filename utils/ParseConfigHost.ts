@@ -45,7 +45,7 @@ export class ParseConfigHost
 
   readDirectory(
     rootDir: string,
-    extensions: readonly string[],
+    extensions: readonly string[] | undefined,
     excludes: readonly string[] | undefined,
     includes: readonly string[],
     depth: number | undefined = Infinity
@@ -72,7 +72,10 @@ export class ParseConfigHost
       nodir: true,
       ignore: {
         ignored: (p) => {
-          return !extensions.some((x) => p.name.endsWith(x));
+          return (
+            extensions !== undefined &&
+            !extensions.some((x) => p.name.endsWith(x))
+          );
         },
         childrenIgnored: (p) => {
           const relativePath = path.relative(this.basePath, p.fullpath());

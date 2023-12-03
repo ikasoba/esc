@@ -11,4 +11,7 @@ export interface EscOptions {
   sourceMap?: BuildOptions["sourcemap"];
   declaration?: boolean;
   declarationDir?: string;
+  loader?: BuildOptions["loader"];
+  write?: BuildOptions["write"];
+  metafile?: BuildOptions["metafile"];
 }
