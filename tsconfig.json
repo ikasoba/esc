@@ -107,7 +107,11 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "escOptions": {
-    "bundleJsonModule": true
+    "loader": {
+      ".json": {
+        "bundle": true
+      }
+    }
   },
   "include": ["**/*.ts"],
   "exclude": ["./dist/"]

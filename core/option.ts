@@ -1,4 +1,4 @@
-import { BuildOptions } from "esbuild";
+import { BuildOptions, Loader } from "esbuild";
 
 export interface EscOptions {
   target?: BuildOptions["target"];
@@ -6,12 +6,11 @@ export interface EscOptions {
   outDir?: string;
   outFile?: string;
   bundle?: boolean;
-  bundleJsonModule?: boolean;
   minify?: boolean;
   sourceMap?: BuildOptions["sourcemap"];
   declaration?: boolean;
   declarationDir?: string;
-  loader?: BuildOptions["loader"];
+  loader?: { [ext: string]: Loader | { type?: Loader; bundle?: boolean } };
   write?: BuildOptions["write"];
   metafile?: BuildOptions["metafile"];
 }

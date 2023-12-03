@@ -86,11 +86,29 @@ export class EscBuilder {
       },
       sourcemap: this.option.escOptions.sourceMap,
       loader: {
-        ...this.option.escOptions.loader,
+        ".json": "file",
       },
       write: this.option.escOptions.write,
       metafile: this.option.escOptions.metafile,
     };
+
+    if (this.option.escOptions.loader) {
+      for (const [key, value] of Object.entries(
+        this.option.escOptions.loader
+      )) {
+        if (typeof value === "object") {
+          const type = value.type ?? option.loader![key];
+
+          if (value.bundle && type == "file") {
+            delete option.loader![key];
+          } else {
+            option.loader![key] = type;
+          }
+        } else if (typeof value === "string") {
+          option.loader![key] = value;
+        }
+      }
+    }
 
     if (this.option.escOptions.bundle) {
       option.outfile = this.option.escOptions.outFile ?? "index.js";
