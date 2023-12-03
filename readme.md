@@ -13,6 +13,12 @@ esc is a command line tool that builds a project based on tsconfig.json.
 $ esc build
 ```
 
+# Loader
+
+```sh
+$ node --import @ikasoba000/esc/loader
+```
+
 # Installation
 
 ```sh
