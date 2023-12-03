@@ -109,6 +109,6 @@
   "escOptions": {
     "bundleJsonModule": true
   },
-  "include": ["**/*"],
+  "include": ["**/*.ts"],
   "exclude": ["./dist/"]
 }
